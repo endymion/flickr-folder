@@ -1,6 +1,6 @@
 = flickr-folder
 
-Description goes here.
+Uses the Flickr API (through flickr_fu) to fill a folder with images that match a specified search string and quantity.
 
 == Note on Patches/Pull Requests
  

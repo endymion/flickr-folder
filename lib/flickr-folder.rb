@@ -1,0 +1,2 @@
+class FlickrFolder
+end

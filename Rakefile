@@ -5,9 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "flickr-folder"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "rap@endymion.com"
+    gem.summary = %Q{Fill a folder with images from Flickr.}
+    gem.description = %Q{Uses the Flickr API (through flickr_fu) to fill a folder with images that match a specified search string and quantity.}
     gem.homepage = "http://github.com/endymion/flickr-folder"
     gem.authors = ["Ryan Alyn Porter"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
