@@ -7,6 +7,7 @@ require 'sequel'
 
 class FlickrFolder
 
+  DB_FILE_NAME = '.flickr-folder.db'
   attr :config, true
   attr :flickr, true
   
@@ -17,15 +18,14 @@ class FlickrFolder
     end
     @config = config
     @flickr = Flickr.new(@config[:config])
-    data_setup
   end
 
   def update
+    data_setup
     photos = []
 
     # Count existing photo files to figure out how many new ones are needed.
-    return photos.size unless (files_needed_count = @config[:folder][:number] -
-      Dir.new(@config[:folder][:path]).entries.size + 3) > 0 # The three is for '.', '..', and '.flickr-folder.db'
+    return photos.size unless (files_needed_count = @config[:folder][:number] - photo_count) > 0
 
     page = 1
     while true do
@@ -44,13 +44,15 @@ class FlickrFolder
 
         # Pick the first photo that's above the minimum size, if specified.  Otherwise grab the largest size.
         selected_size = photo.sizes.last
+        minimum = @config[:folder][:minimum_resolution]
+        next if minimum and
+          photo.sizes.last.width.to_i < minimum and photo.sizes.last.height.to_i < minimum
         photo.sizes.each do |size|
-          if size.width.to_i > @config[:folder][:minimum_resolution] or
-            size.height.to_i > @config[:folder][:minimum_resolution]
+          if size.width.to_i > minimum or size.height.to_i > minimum
             selected_size = size
             break
           end
-        end if @config[:folder][:minimum_resolution]
+        end if minimum
 
         puts "Downloading size: #{selected_size.width} x #{selected_size.height}" if @config[:verbose]
         url = URI.parse(selected_size.source)
@@ -66,7 +68,6 @@ class FlickrFolder
         photos << photo
         cached_photos.insert(:id => photo.id)      
 
-        puts "Size: #{photos.size}"
         return photos.size if photos.size >= files_needed_count
         
       end
@@ -77,12 +78,35 @@ class FlickrFolder
 
   end
 
-  private
-  
-  def data_path
-    File.join(@config[:folder][:path], '.flickr-folder.db')
+  def photo_files
+    Dir.new(@config[:folder][:path]).entries.reject do |file|
+      file.eql? '.' or file.eql? '..' or file.eql? DB_FILE_NAME
+    end
+  end
+
+  def photo_count
+    photo_files.size
+  end
+
+  def purge_photos(count)
+    photo_files.sort {|x,y|
+        File.new(photo_path(x)).mtime <=>
+        File.new(photo_path(y)).mtime
+      }.slice(0, count).each do |file|
+      FileUtils.rm(photo_path(file))
+    end
   end
   
+  private
+
+  def data_path
+    photo_path(DB_FILE_NAME)
+  end
+
+  def photo_path(file)
+    File.join(@config[:folder][:path], file)
+  end
+    
   def data_setup
     create_table = false
     unless File.file?(data_path)
