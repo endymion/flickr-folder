@@ -29,18 +29,24 @@ class TestFlickrFolder < Test::Unit::TestCase
         :config => 'config/flickr.yml',
         :folder => {
           :path => 'tmp/photos',
-          :number => 3
+          :number => 3,
+          :minimum_resolution => 1000
         },
-        :search => { :tags => 'miami beach' }
+        :search => {
+          :tags => 'miami beach',
+          :sort => 'interestingness-desc'
+        }
       })
     end
     should "find photos after a search for a known positive." do
       assert_not_nil @folder
-      assert_equal (photos = @folder.update).size, 3
+      count = @folder.update
+      assert_equal 3, count
     end
     should "find more photos after a few are deleted." do
       assert_not_nil @folder
-      assert_equal (photos = @folder.update).size, 3
+      count = @folder.update
+      assert_equal 3, count
     end
   end
   

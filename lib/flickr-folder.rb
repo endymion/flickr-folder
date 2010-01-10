@@ -1,3 +1,5 @@
+require 'uri'
+require 'net/http'
 require 'FileUtils'
 require 'flickr_fu'
 require 'sqlite3'
@@ -22,7 +24,7 @@ class FlickrFolder
     photos = []
 
     # Count existing photo files to figure out how many new ones are needed.
-    return photos unless (files_needed_count = @config[:folder][:number] -
+    return photos.size unless (files_needed_count = @config[:folder][:number] -
       Dir.new(@config[:folder][:path]).entries.size + 3) > 0 # The three is for '.', '..', and '.flickr-folder.db'
 
     page = 1
@@ -37,14 +39,35 @@ class FlickrFolder
         # Skip known photos.
         cached_photos = @data[:photos]
         next if cached_photos.filter(:id => photo.id).count > 0
-
-        puts "New photo: #{photo.id} #{photo.title}" if @config[:verbose]
       
-        # Download the largest size of each new photo.
+        puts "New photo: #{photo.id}, \"#{photo.title}\", max #{photo.sizes.last.width.to_s}px wide" if @config[:verbose]
+
+        # Pick the first photo that's above the minimum size, if specified.  Otherwise grab the largest size.
+        selected_size = photo.sizes.last
+        photo.sizes.each do |size|
+          if size.width.to_i > @config[:folder][:minimum_resolution] or
+            size.height.to_i > @config[:folder][:minimum_resolution]
+            selected_size = size
+            break
+          end
+        end if @config[:folder][:minimum_resolution]
+
+        puts "Downloading size: #{selected_size.width} x #{selected_size.height}" if @config[:verbose]
+        url = URI.parse(selected_size.source)
+        request = Net::HTTP::Get.new(url.path)
+        response = Net::HTTP.start(url.host, url.port) do |http|
+          http.request(request)
+        end
+        format = photo.original_format || (photo.sizes.first.source =~ /\.(\w+)$/; $1)
+        open(File.join(@config[:folder][:path], "#{photo.id}.#{format}"), "wb") do |file|
+            file.write(response.body)
+        end
+
         photos << photo
         cached_photos.insert(:id => photo.id)      
 
-        return photos if photos.size >= files_needed_count
+        puts "Size: #{photos.size}"
+        return photos.size if photos.size >= files_needed_count
         
       end
 
