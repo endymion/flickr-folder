@@ -1,3 +1,4 @@
+require 'FileUtils'
 require 'rubygems'
 require 'test/unit'
 require 'shoulda'

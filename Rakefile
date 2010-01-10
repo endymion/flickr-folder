@@ -9,7 +9,10 @@ begin
     gem.description = %Q{Uses the Flickr API (through flickr_fu) to fill a folder with images that match a specified search string and quantity.}
     gem.homepage = "http://github.com/endymion/flickr-folder"
     gem.authors = ["Ryan Alyn Porter"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.add_development_dependency "shoulda", ">= 0"
+    gem.add_development_dependency "flickr_fu", ">= 0"
+    gem.add_development_dependency "sqlite3-ruby", ">= 0"
+    gem.add_development_dependency "sequel", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

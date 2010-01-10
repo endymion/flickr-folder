@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "flickr-folder.gemspec",
      "lib/flickr-folder.rb",
      "test/helper.rb",
      "test/test_flickr-folder.rb"
@@ -41,12 +42,18 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<thoughtbot-shoulda>, [">= 0"])
+      s.add_development_dependency(%q<shoulda>, [">= 0"])
+      s.add_development_dependency(%q<flickr_fu>, [">= 0"])
+      s.add_development_dependency(%q<sqlite3-ruby>, [">= 0"])
     else
-      s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
+      s.add_dependency(%q<shoulda>, [">= 0"])
+      s.add_dependency(%q<flickr_fu>, [">= 0"])
+      s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
     end
   else
-    s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
+    s.add_dependency(%q<shoulda>, [">= 0"])
+    s.add_dependency(%q<flickr_fu>, [">= 0"])
+    s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
   end
 end
 
