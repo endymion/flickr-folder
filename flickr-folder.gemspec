@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Alyn Porter"]
-  s.date = %q{2010-01-09}
+  s.date = %q{2010-01-10}
   s.description = %q{Uses the Flickr API (through flickr_fu) to fill a folder with images that match a specified search string and quantity.}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -45,15 +45,18 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<flickr_fu>, [">= 0"])
       s.add_development_dependency(%q<sqlite3-ruby>, [">= 0"])
+      s.add_development_dependency(%q<sequel>, [">= 0"])
     else
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<flickr_fu>, [">= 0"])
       s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
+      s.add_dependency(%q<sequel>, [">= 0"])
     end
   else
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<flickr_fu>, [">= 0"])
     s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
+    s.add_dependency(%q<sequel>, [">= 0"])
   end
 end
 
