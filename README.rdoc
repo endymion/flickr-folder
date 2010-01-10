@@ -12,21 +12,21 @@ the same photo twice.
 
 = Example usage
 
-require 'rubygems'
-require 'flickr-folder'
+  require 'rubygems'
+  require 'flickr-folder'
 
-FlickrFolder.new({
-  :config => 'flickr.yml',
-  :folder => {
-    :path => 'photos',
-    :number => 250,
-    :minimum_resolution => 1000
-  },
-  :search => {
-    :tags => 'miami beach',
-    :sort => 'interestingness-desc'
-  }
-}).update
+  FlickrFolder.new({
+    :config => 'flickr.yml',
+    :folder => {
+      :path => 'photos',
+      :number => 250,
+      :minimum_resolution => 1000
+    },
+    :search => {
+      :tags => 'miami beach',
+      :sort => 'interestingness-desc'
+    }
+  }).update
 
 == Note on Patches/Pull Requests
  
