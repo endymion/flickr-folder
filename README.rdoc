@@ -2,6 +2,32 @@
 
 Uses the Flickr API (through flickr_fu) to fill a folder with images that match a specified search string and quantity.
 
+Results can be filtered by passing a filter proc that will be invoked per photo, so that you can further filter your
+photos beyond what the Flickr API provides in its search syntax.  For example, the API won't let you search based on
+image resolution.
+
+If you delete any photos and then run the update method again then it will automatically find new images that match your
+search conditions and your filter, and it will check them against a SQLite3 database to make sure that it never downloads
+the same photo twice.
+
+= Example usage
+
+require 'rubygems'
+require 'flickr-folder'
+
+FlickrFolder.new({
+  :config => 'flickr.yml',
+  :folder => {
+    :path => 'photos',
+    :number => 250,
+    :minimum_resolution => 1000
+  },
+  :search => {
+    :tags => 'miami beach',
+    :sort => 'interestingness-desc'
+  }
+}).update
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
