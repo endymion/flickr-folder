@@ -30,8 +30,7 @@ the same photo twice.
 
 = API key
 
-You need an API key from Flickr.  Don't worry, it's quick and easy to get one.  Just sign up at Flickr, log in, and go
-to the "App Garden"[http://www.flickr.com/services/apps/create/apply] to create your key.  Then create a YML file that
+You need an API key from Flickr.  Don't worry, it's quick and easy to get one.  Just go to Flickr[http://www.flickr.com/services/apps/create/apply] to create your key.  Then create a YML file that
 looks like this:
 
   key: "0923400YOUR0KEY0GOES0HERE00198"
